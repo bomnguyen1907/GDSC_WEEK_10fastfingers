@@ -1,0 +1,101 @@
+/* Định dạng phần header */
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+
+header h1 {
+    font-size: 2em;
+}
+
+header nav ul {
+    list-style: none;
+}
+
+header nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+header nav a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Định dạng phần main */
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.product {
+    width: 300px;
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+.product img {
+    max-width: 100%;
+}
+
+.product h2 {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+.product p {
+    margin: 10px 0;
+}
+
+.product button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Định dạng phần footer */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+/* CSS cho trang web bán hàng */
+
+/* ... (phần CSS khác) */
+
+.product {
+    width: 300px;
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    transition: transform 0.3s; /* Hiệu ứng chuyển đổi */
+}
+
+.product:hover {
+    transform: scale(1.05); /* Phóng to khi di chuột qua sản phẩm */
+}
+
+.buy-button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Hiệu ứng màu nền khi di chuột qua nút */
+}
+
+.buy-button:hover {
+    background-color: #555; /* Thay đổi màu nền khi di chuột qua nút */
+}
+
+/* ... (phần CSS khác) */
