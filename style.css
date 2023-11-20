@@ -1,0 +1,100 @@
+/* Import Google Font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+body {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #17a2b8;
+}
+
+.wrapper {
+  width: auto;
+  padding: 35px;
+  background: none;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  justify-content: center; 
+}
+
+.wrapper .conten-box {
+  padding: 13px 20px 0;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.typing-wrapper {
+  position: relative;
+  font-family: sans-serif;
+  font-size: 21px;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  text-align: justify;
+  letter-spacing: 1px;
+  word-break: break-all;
+  margin-bottom: 10px;
+  /* Add some spacing between the editable div and typing text */
+}
+
+.placeholder {
+  position: relative;
+  color: #ccc;
+  outline: none;
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  /* Additional styles for font and text alignment */
+  font-size: 24px;
+  line-height: 1.5;
+  text-align: justify;
+
+}
+
+.typing-text {
+  color: black;
+  position: absolute;
+  top: 0;
+  left: 0px;
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  font-size: 24px;
+  line-height: 1.5;
+  text-align: justify;
+  outline: none;
+  border: none;
+  background: none;
+  letter-spacing: 1px;
+
+}
+
+.correct {
+  color: green;
+}
+
+.incorrect {
+  color: red;
+}
+
+input {
+  caret-color: transparent;
+}
+
+.content {
+  margin-top: 0; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 7.5rem;
+}
