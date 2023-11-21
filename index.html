@@ -1,29 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Typing Speed Test Game</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 
 <body>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+    <audio id="keySound1">
+        <source src="./keyboard-sound.mp3" type="audio/mp3">
+      </audio>
+      <audio id="keySound2">
+        <source src="./keyboard-sound2.mp3" type="audio/mp3">
+      </audio>
+      <audio id="keySound3">
+        <source src="./keyboard-sound3.mp3" type="audio/mp3">
+      </audio>
+      <audio id="keySound4">
+        <source src="./keyboard-sound4.mp3" type="audio/mp3">
+      </audio>
     <div class="wrapper">
         <div class="game-text"> Warm Up </div>
         <div class="conten-box">
-                <div class="typing-wrapper">
-                    <div class="placeholder" id="wordToType">
-                    </div>
-                    <input class="typing-text" type="text">
+            <div class="typing-wrapper">
+                <div class="placeholder" id="wordToType">
                 </div>
+                <input class="typing-text" type="text">
+            </div>
         </div>
     </div>
     <div class="content">
-        <div id="timeDisplay">30s</div>
-        <div id="wpmDisplay">WPM: 0</div>
-        <button id="startButton">Start Game</button>
+       
+        <p>Time</p>
+        <div id="timeDisplay">60s</div>
+        <div class="modal" id="resultModal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>WPM: <span id="wpmResult">0</span></p>
+                <p>Mistakes: <span id="mistakesCount">NULL</span></p>
+                <p>Accuracy: <span id="accuracyPercentage">NULL</span></p>
+            </div>
+        </div>
+        <button id="startButton" class="button-28"> <i class="fas fa-play"></i>
+            <span>Start Game</span></button>
+            <button id="viewResultButton" class="button-28">Results</button>
+    </div>
+    <div class="keyboard">
+        <div class="keyboard__row">
+            <div class="key--double" data-key="192">
+                <div>~</div>
+                <div>`</div>
+            </div>
+            <div class="key--double" data-key="49">
+                <!-- <div>!</div> -->
+                <div>1</div>
+            </div>
+            <div class="key--double" data-key="50">
+                <!-- <div>@</div> -->
+                <div>2</div>
+            </div>
+            <div class="key--double" data-key="51">
+                <!-- <div>#</div> -->
+                <div>3</div>
+            </div>
+            <div class="key--double" data-key="52">
+                <!-- <div>$</div> -->
+                <div>4</div>
+            </div>
+            <div class="key--double" data-key="53">
+                <!-- <div>%</div> -->
+                <div>5</div>
+            </div>
+            <div class="key--double" data-key="54">
+                <!-- <div>^</div> -->
+                <div>6</div>
+            </div>
+            <div class="key--double" data-key="55">
+                <!-- <div>&</div> -->
+                <div>7</div>
+            </div>
+            <div class="key--double" data-key="56">
+                <!-- <div>*</div> -->
+                <div>8</div>
+            </div>
+            <div class="key--double" data-key="57">
+                <!-- <div>(</div> -->
+                <div>9</div>
+            </div>
+            <div class="key--double" data-key="48">
+                <!-- <div>)</div> -->
+                <div>0</div>
+            </div>
+            <div class="key--double" data-key="189">
+                <div>_</div>
+                <!-- <div>-</div> -->
+            </div>
+            <div class="key--double" data-key="187">
+                <div>+</div>
+                <!-- <div>=</div> -->
+            </div>
+            <div class="key--bottom-right key--word key--w4" data-key="8">
+                <span>delete</span>
+            </div>
+        </div>
+        <div class="keyboard__row">
+            <div class="key--bottom-left key--word key--w4" data-key="9">
+                <span>tab</span>
+            </div>
+            <div class="key--letter" data-char="Q">Q</div>
+            <div class="key--letter" data-char="W">W</div>
+            <div class="key--letter" data-char="E">E</div>
+            <div class="key--letter" data-char="R">R</div>
+            <div class="key--letter" data-char="T">T</div>
+            <div class="key--letter" data-char="Y">Y</div>
+            <div class="key--letter" data-char="U">U</div>
+            <div class="key--letter" data-char="I">I</div>
+            <div class="key--letter" data-char="O">O</div>
+            <div class="key--letter" data-char="P">P</div>
+            <div class="key--double" data-key="219" data-char="{[">
+                <div>{</div>
+                <!-- <div>[</div> -->
+            </div>
+            <div class="key--double" data-key="221" data-char="}]">
+                <div>}</div>
+                <!-- <div>]</div> -->
+            </div>
+            <div class="key--double" data-key="220" data-char="|\">
+                <div>|</div>
+                <!-- <div>\</div> -->
+            </div>
+        </div>
+        <div class="keyboard__row">
+            <div class="key--bottom-left key--word key--w5" data-key="20">
+                <span>caps lock</span>
+            </div>
+            <div class="key--letter" data-char="A">A</div>
+            <div class="key--letter" data-char="S">S</div>
+            <div class="key--letter" data-char="D">D</div>
+            <div class="key--letter" data-char="F">F</div>
+            <div class="key--letter" data-char="G">G</div>
+            <div class="key--letter" data-char="H">H</div>
+            <div class="key--letter" data-char="J">J</div>
+            <div class="key--letter" data-char="K">K</div>
+            <div class="key--letter" data-char="L">L</div>
+            <div class="key--double" data-key="186">
+                <div>:</div>
+                <!-- <div>;</div> -->
+            </div>
+            <div class="key--double" data-key="222">
+                <div>"</div>
+                <!-- <div>'</div> -->
+            </div>
+            <div class="key--bottom-right key--word key--w5" data-key="13">
+                <span>return</span>
+            </div>
+        </div>
+        <div class="keyboard__row">
+            <div class="key--bottom-left key--word key--w6" data-key="16">
+                <span>shift</span>
+            </div>
+            <div class="key--letter" data-char="Z">Z</div>
+            <div class="key--letter" data-char="X">X</div>
+            <div class="key--letter" data-char="C">C</div>
+            <div class="key--letter" data-char="V">V</div>
+            <div class="key--letter" data-char="B">B</div>
+            <div class="key--letter" data-char="N">N</div>
+            <div class="key--letter" data-char="M">M</div>
+            <div class="key--double" data-key="188">
+                <div>&lt;</div>
+                <!-- <div>,</div> -->
+            </div>
+            <div class="key--double" data-key="190">
+                <div>&gt;</div>
+                <!-- <div>.</div> -->
+            </div>
+            <div class="key--double" data-key="191">
+                <div>?</div>
+                <!-- <div>/</div> -->
+            </div>
+            <div class="key--bottom-right key--word key--w6" data-key="16-R">
+                <span>shift</span>
+            </div>
+        </div>
+        <div class="keyboard__row keyboard__row--h3">
+            <div class="key--bottom-left key--word">
+                <span>fn</span>
+            </div>
+            <div class="key--bottom-left key--word key--w1" data-key="17">
+                <span>Ctrl</span>
+            </div>
+            <div class="key--bottom-left key--word key--w1" data-key="18">
+                <span>Alt</span>
+            </div>
+            <div class="key--bottom-right key--word key--w3" data-key="91">
+                <span>Win</span>
+            </div>
+            <div class="key--double key--right key--space" data-key="32" data-char=" ">
+                &nbsp;
+            </div>
+            <div class="key--bottom-left key--word key--w3" data-key="93-R">
+                <span>Win</span>
+            </div>
+            <div class="key--bottom-left key--word key--w1" data-key="18-R">
+                <span>Alt</span>
+            </div>
+            <div data-key="37" class="key--arrow">
+                <span>&#9664;</span>
+            </div>
+            <div class="key--double key--arrow--tall" data-key="38">
+                <div>&#9650;</div>
+                <div>&#9660;</div>
+            </div>
+            <div data-key="39" class="key--arrow">
+                <span>&#9654;</span>
+            </div>
+        </div>
     </div>
     <script src="scripts.js"></script>
 
