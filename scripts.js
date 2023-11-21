@@ -40,8 +40,7 @@ const resultSection = document.getElementById('resultSection');
 const wpmResult = document.getElementById('wpmResult');
 const gameText = document.querySelector('.game-text');
 const wordToType = document.getElementById('wordToType');
-const mistakesCount = document.getElementById('mistakesCount');
-const accuracyPercentage = document.getElementById('accuracyPercentage');
+
 const closeBtn = document.querySelector('.close');
 viewResultButton.addEventListener('click', function () {
   resultModal.style.display = 'block';
@@ -62,20 +61,11 @@ function calculateResults() {
   const endTime = new Date().getTime();
   const minutes = (endTime - startTime) / 60000; // Calculate minutes
   const typedWords = wordCount;
-  const accuracy = calculateAccuracy(typedWords, words.length);
   const wpm = Math.round(typedWords / minutes); // Calculate WPM
-  const incorrectWords = typedWords - words.length;
 
   wpmResult.textContent = wpm;
-  mistakesCount.textContent = incorrectWords;
-  accuracyPercentage.textContent = `${accuracy}%`;
-}
 
-function calculateAccuracy(typedWords, totalWords) {
-  const accuracy = ((totalWords - (typedWords - wordCount)) / totalWords) * 100;
-  return accuracy.toFixed(2);
 }
-
 
 let countdown;
 let timeLeft = 60;
@@ -84,11 +74,14 @@ let wordCount = 0;
 
 startButton.addEventListener('click', function () {
   startGame();
+  if(isStared){
+    viewResultButton.style.display ='block';
+  }
 });
 
 function startGame() {
   isStared = true;
-  timeLeft = 60;
+  timeLeft = 5;
   clearInterval(countdown);
   wordCount = 0;
   gameText.textContent = 'Game Started';
@@ -99,8 +92,8 @@ function startGame() {
     if (timeLeft <= 0) {
       clearInterval(countdown);
       alert('Time\'s up!');
-      startButton.textContent = 'Try Again';
-      calculateWPM();
+      startButton.innerHTML = '<i class="fas fa-redo-alt"></i> Try Again';
+      gameText.textContent = `Well Done, Let's Warm Up and Try Again`;
       return;
     }
   }, 1000);
@@ -200,12 +193,29 @@ window.addEventListener('resize', function (e) {
 size();
 
 const body = document.body;
-
+// const button28 = document.getElementsByClassName('button28');
 startButton.addEventListener('click', function () {
   body.classList.add('transition-background');
   body.classList.add('dark-background');
-
+  typingInput.classList.add('input-active');
+  startButton.setAttribute('disabled', true);
+  gameText.classList.add('white-font-anmiation');
+  // button28.classList.add('white-font-anmiation');
   setTimeout(() => {
     body.classList.remove('dark-background');
+    typingInput.classList.remove('input-active');
+    startButton.removeAttribute('disabled');
+    gameText.classList.remove('white-font-anmiation');
   }, timeLeft*1000); 
+});
+
+const keySounds = document.querySelectorAll('audio[id^="keySound"]');
+const getRandomSound = () => Math.floor(Math.random() * keySounds.length);
+
+document.body.addEventListener('keydown', function (event) {
+  const randomIndex = getRandomSound();
+  const soundToPlay = keySounds[randomIndex];
+
+  soundToPlay.currentTime = 0; // Rewind to the start of the audio
+  soundToPlay.play();
 });
