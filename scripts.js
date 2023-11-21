@@ -81,7 +81,7 @@ startButton.addEventListener('click', function () {
 
 function startGame() {
   isStared = true;
-  timeLeft = 5;
+  timeLeft = 60;
   clearInterval(countdown);
   wordCount = 0;
   gameText.textContent = 'Game Started';
