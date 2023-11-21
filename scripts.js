@@ -193,6 +193,7 @@ window.addEventListener('resize', function (e) {
 size();
 
 const body = document.body;
+const timeText = document.getElementById('timeText');
 // const button28 = document.getElementsByClassName('button28');
 startButton.addEventListener('click', function () {
   body.classList.add('transition-background');
@@ -200,12 +201,15 @@ startButton.addEventListener('click', function () {
   typingInput.classList.add('input-active');
   startButton.setAttribute('disabled', true);
   gameText.classList.add('white-font-anmiation');
-  // button28.classList.add('white-font-anmiation');
+  timeDisplay.classList.add('white-font-anmiation');
+  timeText.classList.add('white-font-anmiation');
   setTimeout(() => {
     body.classList.remove('dark-background');
     typingInput.classList.remove('input-active');
     startButton.removeAttribute('disabled');
     gameText.classList.remove('white-font-anmiation');
+    timeDisplay.classList.remove('white-font-anmiation');
+    timeText.classList.remove('white-font-anmiation');
   }, timeLeft*1000); 
 });
 
