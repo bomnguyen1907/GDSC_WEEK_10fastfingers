@@ -1,13 +1,48 @@
+const typingInput = document.querySelector('.typing-text');
+const startButton = document.getElementById('startButton');
+const timeDisplay = document.getElementById('timeDisplay');
+const viewResultButton = document.getElementById('viewResultButton');
+const resultSection = document.getElementById('resultSection');
+const wpmResult = document.getElementById('wpmResult');
+const gameText = document.querySelector('.game-text');
+const wordToType = document.getElementById('wordToType');
+const continueBtn = document.querySelector('.continue-btn');
+const closeBtn = document.querySelector('.close');
+// const changeColorBtn = document.querySelector('button.change-color-btn');
 
-const words = [
-  "apple", "banana", "orange", "grape", "strawberry", "pineapple", "watermelon", "blueberry", "kiwi", "pear",
-  "we", "he", "she", "it", "they", "this", "that", "these", "those", "some", "any", "all", "many", "few",
-  "big", "small", "good", "bad", "happy", "sad", "beautiful", "ugly", "hot", "cold", "new", "old", "young",
-  "man", "woman", "child", "dog", "cat", "bird", "fish", "house", "car", "tree", "flower", "sun", "moon",
-  "run", "walk", "jump", "eat", "drink", "sleep", "talk", "listen", "read", "write", "play", "work", "study"
-];
 
+viewResultButton.addEventListener('click', function () {
+  resultModal.style.display = 'block';
+  calculateResults();
+});
+
+closeBtn.addEventListener('click', function () {
+  resultModal.style.display = 'none';
+});
+
+continueBtn.addEventListener('click', function () {
+  resultModal.style.display = 'none';
+})
+
+// changeColorBtn.addEventListener('click', function () {
+//   changeColorModal.style.display = 'block';
+//   calculateResults();
+// });
+
+// closeBtn.addEventListener('click', function () {
+//   changeColorModal.style.display = 'none';
+// });
+
+// continueBtn.addEventListener('click', function () {
+//   changeColorModal.style.display = 'none';
+// })
+
+let countdown;
+let timeLeft = 60;
+let startTime;
+let wordCount = 0;
 let isStared = false;
+
 function getRandomWord() {
   return words[Math.floor(Math.random() * words.length)];
 }
@@ -31,25 +66,7 @@ function setRandomWord() {
 // Call the function to set the initial random word
 setRandomWord();
 
-const typingInput = document.querySelector('.typing-text');
-// const wordToType = document.getElementById('wordToType');
-const startButton = document.getElementById('startButton');
-const timeDisplay = document.getElementById('timeDisplay');
-const viewResultButton = document.getElementById('viewResultButton');
-const resultSection = document.getElementById('resultSection');
-const wpmResult = document.getElementById('wpmResult');
-const gameText = document.querySelector('.game-text');
-const wordToType = document.getElementById('wordToType');
 
-const closeBtn = document.querySelector('.close');
-viewResultButton.addEventListener('click', function () {
-  resultModal.style.display = 'block';
-  calculateResults();
-});
-
-closeBtn.addEventListener('click', function () {
-  resultModal.style.display = 'none';
-});
 
 window.addEventListener('click', function (event) {
   if (event.target === resultModal) {
@@ -67,17 +84,21 @@ function calculateResults() {
 
 }
 
-let countdown;
-let timeLeft = 60;
-let startTime;
-let wordCount = 0;
 
 startButton.addEventListener('click', function () {
   startGame();
-  if(isStared){
-    viewResultButton.style.display ='block';
+  if (isStared) {
+    viewResultButton.style.display = 'block';
   }
 });
+
+function closeModal() {
+  resultModal.style.animation = 'modal-disappear 0.5s forwards';
+  setTimeout(() => {
+    resultModal.style.display = 'none';
+    resultModal.style.animation = '';
+  }, 500);
+}
 
 function startGame() {
   isStared = true;
@@ -91,9 +112,12 @@ function startGame() {
 
     if (timeLeft <= 0) {
       clearInterval(countdown);
-      alert('Time\'s up!');
       startButton.innerHTML = '<i class="fas fa-redo-alt"></i> Try Again';
-      gameText.textContent = `Well Done, Let's Warm Up and Try Again`;
+      gameText.textContent = `Practice Makes Perfect, Try Again?`;
+      calculateResults();
+      timeText.textContent = '';
+      timeDisplay.textContent = '';
+      resultModal.style.display = 'block';
       return;
     }
   }, 1000);
@@ -110,6 +134,7 @@ function startGame() {
   typingInput.value = '';
   wordToType.textContent = getRandomWord();
   startTime = new Date().getTime(); // Record start time
+
 }
 
 typingInput.addEventListener('input', function (event) {
@@ -131,7 +156,6 @@ function displayTime() {
   timeDisplay.textContent = `${timeLeft}s`;
 }
 
-
 document.body.addEventListener('keydown', function () {
   // Set the focus on the typing input field
   typingInput.focus();
@@ -140,36 +164,36 @@ document.body.addEventListener('keydown', function () {
 
 
 
-function getKey (e) {
+function getKey(e) {
   var location = e.location;
   var selector;
   if (location === KeyboardEvent.DOM_KEY_LOCATION_RIGHT) {
-      selector = ['[data-key="' + e.keyCode + '-R"]']
+    selector = ['[data-key="' + e.keyCode + '-R"]']
   } else {
-      var code = e.keyCode || e.which;
-      selector = [
-          '[data-key="' + code + '"]',
-          '[data-char*="' + encodeURIComponent(String.fromCharCode(code)) + '"]'
-      ].join(',');
+    var code = e.keyCode || e.which;
+    selector = [
+      '[data-key="' + code + '"]',
+      '[data-char*="' + encodeURIComponent(String.fromCharCode(code)) + '"]'
+    ].join(',');
   }
   return document.querySelector(selector);
 }
 
-function pressKey (char) {
+function pressKey(char) {
   var key = document.querySelector('[data-char*="' + char.toUpperCase() + '"]');
   if (!key) {
-      return console.warn('No key for', char);
+    return console.warn('No key for', char);
   }
   key.setAttribute('data-pressed', 'on');
   setTimeout(function () {
-      key.removeAttribute('data-pressed');
+    key.removeAttribute('data-pressed');
   }, 200);
 }
 
 document.body.addEventListener('keydown', function (e) {
   var key = getKey(e);
   if (!key) {
-      return console.warn('No key for', e.keyCode);
+    return console.warn('No key for', e.keyCode);
   }
 
   key.setAttribute('data-pressed', 'on');
@@ -180,7 +204,7 @@ document.body.addEventListener('keyup', function (e) {
   key && key.removeAttribute('data-pressed');
 });
 
-function size () {
+function size() {
   var size = keyboard.parentNode.clientWidth / 90;
   keyboard.style.fontSize = size + 'px';
   console.log(size);
@@ -210,7 +234,7 @@ startButton.addEventListener('click', function () {
     gameText.classList.remove('white-font-anmiation');
     timeDisplay.classList.remove('white-font-anmiation');
     timeText.classList.remove('white-font-anmiation');
-  }, timeLeft*1000); 
+  }, timeLeft * 1000);
 });
 
 const keySounds = document.querySelectorAll('audio[id^="keySound"]');
