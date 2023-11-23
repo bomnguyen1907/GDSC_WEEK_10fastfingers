@@ -7,41 +7,71 @@ const words = [
   "run", "walk", "jump", "eat", "drink", "sleep", "talk", "listen", "read", "write", "play", "work", "study"
 ];
 
-let isStared = false;
-function getRandomWord() {
-  return words[Math.floor(Math.random() * words.length)];
-}
-let previousWord = ''; // Variable to store the previous word
-
-function setRandomWordWithoutRepetition() {
-  let newWord = getRandomWord();
-  while (newWord === previousWord) {
-    newWord = getRandomWord(); // Get a new word until it's different from the previous one
-  }
-  previousWord = newWord;
-  return newWord;
-}
-// Function to set the random word in the placeholder div
-function setRandomWord() {
-  const wordToType = document.getElementById('wordToType');
-  const newWord = setRandomWordWithoutRepetition();
-  wordToType.textContent = newWord;
-}
-
-// Call the function to set the initial random word
-setRandomWord();
-
+let isStarted = false;
+let countdown;
+let timeLeft = 60;
+let startTime;
+let wordCount = 0;
 const typingInput = document.querySelector('.typing-text');
-// const wordToType = document.getElementById('wordToType');
+const wordToType = document.getElementById('wordToType');
 const startButton = document.getElementById('startButton');
 const timeDisplay = document.getElementById('timeDisplay');
 const viewResultButton = document.getElementById('viewResultButton');
-const resultSection = document.getElementById('resultSection');
+const resultModal = document.getElementById('resultModal');
 const wpmResult = document.getElementById('wpmResult');
 const gameText = document.querySelector('.game-text');
-const wordToType = document.getElementById('wordToType');
-
 const closeBtn = document.querySelector('.close');
+
+function getRandomWord() {
+  return words[Math.floor(Math.random() * words.length)];
+}
+
+function setRandomWord() {
+  const newWord = getRandomWord();
+  wordToType.textContent = newWord;
+}
+
+function startGame() {
+  isStarted = true;
+  timeLeft = 60;
+  clearInterval(countdown);
+  wordCount = 0;
+  totalWords = 0 
+  gameText.textContent = 'Game Started';
+  countdown = setInterval(function () {
+    timeLeft--;
+    displayTime();
+
+    if (timeLeft <= 0) {
+      clearInterval(countdown);
+      calculateResults();
+      alert('Time\'s up!');
+      startButton.innerHTML = '<i class="fas fa-redo-alt"></i> Try Again';
+      gameText.textContent = `Well Done, Let's Warm Up and Try Again`;
+      return;
+    }
+  }, 1000);
+
+  typingInput.addEventListener('input', handleInput);
+  setRandomWord();
+  startTime = new Date().getTime(); // Record start time
+}
+
+function handleInput(event) {
+  const typedText = event.target.value.trim();
+  const originalWord = wordToType.textContent.trim();
+
+  if (typedText === originalWord) {
+    wordCount++;
+    setRandomWord();
+    event.target.value = '';
+  }
+}
+
+function displayTime() {
+  timeDisplay.textContent = `${timeLeft}s`;
+}
+
 viewResultButton.addEventListener('click', function () {
   resultModal.style.display = 'block';
   calculateResults();
@@ -62,20 +92,17 @@ function calculateResults() {
   const minutes = (endTime - startTime) / 60000; // Calculate minutes
   const typedWords = wordCount;
   const wpm = Math.round(typedWords / minutes); // Calculate WPM
-
+  const accuracy = Math.round((wordCount / totalWords) * 100); // Tính độ chính xác
+  
   wpmResult.textContent = wpm;
-
+  accuracyResult.textContent = `${accuracy}%`; // Hiển thị độ chính xác
+  resultModal.style.display = 'block'; // Hiển thị modal kết quả
 }
-
-let countdown;
-let timeLeft = 60;
-let startTime;
-let wordCount = 0;
 
 startButton.addEventListener('click', function () {
   startGame();
-  if(isStared){
-    viewResultButton.style.display ='block';
+  if (isStarted) {
+    viewResultButton.style.display = 'block';
   }
 });
 
@@ -112,34 +139,40 @@ function startGame() {
   startTime = new Date().getTime(); // Record start time
 }
 
-typingInput.addEventListener('input', function (event) {
-  if (isStared == true) {
-    return;
-  }
-  else {
-    const typedText = event.target.value.trim();
-    const originalWord = wordToType.textContent.trim();
+function handleInput(event) {
+  const typedText = event.target.value.trim();
+  const originalWord = wordToType.textContent.trim();
 
-    if (typedText === originalWord) {
-      wordToType.textContent = getRandomWord();
+  // Kiểm tra xem từ đã được nhập đúng hay chưa
+  if (typedText === originalWord) {
+      wordCount++;
+      wordToType.classList.remove('incorrect');
+      wordToType.classList.add('correct');
+      setRandomWordWithoutRepetition();
       event.target.value = '';
-    }
+  } else {
+      wordToType.classList.remove('correct');
+      wordToType.classList.add('incorrect');
   }
-});
+}
+
+function setRandomWord() {
+  const wordToType = document.getElementById('wordToType');
+  const newWord = setRandomWordWithoutRepetition();
+  wordToType.textContent = newWord;
+
+  // Reset trạng thái của từ trước đó
+  wordToType.classList.remove('correct');
+  wordToType.classList.remove('incorrect');
+}
 
 function displayTime() {
   timeDisplay.textContent = `${timeLeft}s`;
 }
-
-
 document.body.addEventListener('keydown', function () {
   // Set the focus on the typing input field
-  typingInput.focus();
+  typingInput.addEventListener('input', handleInput);
 });
-
-
-
-
 function getKey (e) {
   var location = e.location;
   var selector;
@@ -222,4 +255,11 @@ document.body.addEventListener('keydown', function (event) {
 
   soundToPlay.currentTime = 0; // Rewind to the start of the audio
   soundToPlay.play();
+});
+document.addEventListener('keydown', function (e) {
+  // Kiểm tra xem phím được nhấn có phải là một phím chữ cái không
+  if (/^[a-zA-Z]$/.test(e.key)) {
+    // Set trạng thái của ô nhập liệu
+    typingInput.focus();
+  }
 });

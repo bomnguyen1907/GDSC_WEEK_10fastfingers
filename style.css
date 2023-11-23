@@ -45,6 +45,10 @@ body {
   margin-bottom: 10px;
   /* Add some spacing between the editable div and typing text */
 }
+/* Thêm style cho class "incorrect" */
+#wordToType.incorrect {
+  color: red;
+}
 #viewResultButton {
   display: none;
 }
